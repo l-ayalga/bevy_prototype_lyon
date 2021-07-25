@@ -12,7 +12,7 @@
 //! `ShapeBundle`.
 
 use bevy::{
-    app::{AppBuilder, Plugin},
+    app::{App, Plugin},
     asset::{Assets, Handle},
     ecs::{
         query::Added,
@@ -97,7 +97,7 @@ impl StrokeVertexConstructor<Vertex> for VertexConstructor {
 pub struct ShapePlugin;
 
 impl Plugin for ShapePlugin {
-    fn build(&self, app: &mut AppBuilder) {
+    fn build(&self, app: &mut App) {
         let fill_tess = FillTessellator::new();
         let stroke_tess = StrokeTessellator::new();
         app.insert_resource(fill_tess)
@@ -109,7 +109,7 @@ impl Plugin for ShapePlugin {
             )
             .add_system_to_stage(Stage::Shape, complete_shape_bundle.system());
 
-        crate::render::add_shape_pipeline(app.world_mut());
+        crate::render::add_shape_pipeline(&mut app.world);
     }
 }
 
